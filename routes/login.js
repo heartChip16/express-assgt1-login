@@ -72,7 +72,42 @@ module.exports = (params) => {
                 catch (err) {
                     return next(err);
                 }
-            } else {  //Logout
+            } else if (type === "Signup") {
+
+                const { loginService } = params;
+                const { username, password } = req.body;
+                const errors = validationResult(req);
+                // console.log("post errors: ", errors);
+                if ((!errors.isEmpty())) {
+                    req.session.users = {
+                        errors: errors.array(),
+                    };
+                    return res.redirect('/login');
+                }
+                // console.log(req.body);
+                // const newUser = await loginService.addUser(username, password);
+                var users = await loginService.getUsersList();
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].username === username) {
+                        matched = true;
+                        break;
+                    }
+                    matched = false;
+                };
+                if (matched) {
+                    req.session.users = {
+                        errors: [{ msg: 'Error! User already exist.' }]
+                    };
+                    return res.redirect('/login');
+
+                } else {
+                    var user_saved = await loginService.addUser(username, password);
+                    localStorage.setItem('username', username);
+                    return res.redirect('/');
+                }
+
+            }
+            else {  //Logout
                 localStorage.setItem('username', "");
                 req.session.users = {};
                 const username = "";
@@ -123,7 +158,42 @@ module.exports = (params) => {
             catch (err) {
                 return next(err);
             }
-        } else {  //Logout
+        } else if (type === "Signup") {
+
+            const { loginService } = params;
+            const { username, password } = req.body;
+            const errors = validationResult(req);
+            if ((!errors.isEmpty())) {
+                req.session.users = {
+                    errors: errors.array(),
+                };
+                return res.json({ errors: errors.array() });
+            }
+            // console.log(req.body);
+            // const newUser = await loginService.addUser(username, password);
+            var users = await loginService.getUsersList();
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].username === username) {
+                    matched = true;
+                    break;
+                }
+                matched = false;
+            };
+            if (matched) {
+                req.session.users = {
+                    errors: [{ msg: 'Error! User already exist.' }]
+                };
+                // console.log(res.json(req.session.users));
+                return res.json(req.session.users.errors);
+            } else {
+                var user_saved = await loginService.addUser(username, password);
+                localStorage.setItem('username', username);
+                return res.json({ successMessage: `Successfull signed up new user: ${username}.` });
+            }
+
+        }
+
+        else {  //Logout
             localStorage.setItem('username', "");
             req.session.users = {};
             const username = "";

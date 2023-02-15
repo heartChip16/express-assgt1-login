@@ -33,9 +33,14 @@ class LoginService {
   async addUser(username, password) {
     const users = (await this.getUsers()) || [];
     users.unshift({ username, password });
-    return writeFile(this.datafile, JSON.stringify(users));
+    fs.writeFile(this.datafile, JSON.stringify(users), (err) => {
+      if (!err) {
+        console.log("Successfully added user.");
+      } else {
+        console.log("Error. Failed to add user.");
+      }
+    });
   }
-
   /**
    * Fetches users data from the JSON file provided to the constructor
    */

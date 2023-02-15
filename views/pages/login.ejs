@@ -20,19 +20,35 @@
                             </div>
                             <% }%>
                 </div>
-                <form class="login-form" method="POST" action="/login">
+                <form class="login-form mb-5 pb-5" method="POST" action="/login">
                     <div class="form-group">
                         <label for="login-form-username">Username</label>
-                        <input name="username" type="text" class="form-control" id="feedback-form-username"
+                        <input name="username" type="text" class="form-control" id="login-form-username"
                             placeholder="Enter your username">
                     </div>
                     <div class="form-group">
-                        <label for="feedback-form-title">Password</label>
-                        <input name="password" type="password" class="form-control" id="feedback-form-password"
+                        <label for="login-form-title">Password</label>
+                        <input name="password" type="password" class="form-control" id="login-form-password"
                             placeholder="Enter your password">
                     </div>
                     <input name="type" type="hidden" class="form-control" id="type" value="Login">
                     <button type="submit" name="submit" class="btn btn-secondary float-right">Login</button>
+                </form>
+
+                <form class="signup-form mt-5" method="POST" action="/login">
+                    <h1>Doesn't have an account? Sign up below. </h1>
+                    <div class="form-group">
+                        <label for="signup-form-username">Username</label>
+                        <input name="username" type="text" class="form-control" id="signup-form-username"
+                            placeholder="Enter your username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-form-title">Password</label>
+                        <input name="password" type="password" class="form-control" id="signup-form-password"
+                            placeholder="Enter your password">
+                    </div>
+                    <input name="type" type="hidden" class="form-control" id="type" value="Signup">
+                    <button type="submit" name="submit" class="btn btn-secondary float-right">Sign up</button>
                 </form>
             </div>
         </div>
